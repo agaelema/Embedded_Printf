@@ -1,11 +1,15 @@
 /*
- *		uncomment desired uC, Model and serial com
+ *	serial configuration - v 0.1
+ *	21/12/2015
  */
 
 #ifndef		SERIAL_CONF
 #define		SERIAL_CONF
 
-// list of suported Microcontrollers and their serial com
+/*
+ *	list of suported Microcontrollers and their serial com
+ *	- uncomment desired uC, Model and serial com
+ */
 #define		MSP430G2553_USCI_A0			1
 
 /*

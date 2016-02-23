@@ -1,5 +1,5 @@
 /*
- *	Include v 0.2 - Depois fazer o cabeçalho
+ *	Include v 0.2
  *	21/12/2015
  */
 

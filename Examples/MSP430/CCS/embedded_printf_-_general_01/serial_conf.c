@@ -1,5 +1,6 @@
 /*
- *
+ *	serial configuration - v 0.1
+ *	21/12/2015
  */
 
 #include "serial_conf.h"
