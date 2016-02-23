@@ -1,8 +1,14 @@
 /*
+ *	Embedded version of "printf" function
+ *
+ *	Based in this link:
+ *	http://e2e.ti.com/support/development_tools/code_composer_studio/f/81/p/30479/107146
+ *
+ *	Updated by: Haroldo Amaral - agaelema@globo.com
  *	Include v 0.2
  *	21/12/2015
  */
-
+ 
 #ifndef		EMBEDDED_PRINTF
 #define		EMBEDDED_PRINTF
 
