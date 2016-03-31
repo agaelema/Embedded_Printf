@@ -113,4 +113,3 @@ void linesUp(unsigned char lines);
 
 ### To do:
 - enable to configure library inside the main.c (or similar)
->>>>>>> origin/master
