@@ -27,7 +27,11 @@ Besides the "embedded_printf( )" there are a simple version of each principal fu
 
 > If possible contribute sending bug repports, new functions or porting the library to new devices.
 
-In this initial version is provided the port to the MSP430G2553 used in the Launchpad Valueline.
+#### Devices list (Ported)
+MSP430
+> MSP430G2553 (launchpad valueline), MSP430FR6989 (Launchpad EXP430FR6989)
+#### Future Devices
+More MSP430's, MSP432, Stellaris/Tiva
 
 #### Bellow there is a list of the functions implemented:
 
@@ -110,6 +114,27 @@ void putChar(unsigned char byte);
 // return n lines in the terminal
 void linesUp(unsigned char lines);
 ```
+
+### Performance comparison
+To evaluate the performance I compared the time taken to perform the "Embedded_printf" functions with the "printf" function native in the compiler Code Composer Studio. (More tips how do this in this website: http://processors.wiki.ti.com/index.php/Printf_support_for_MSP430_CCSTUDIO_compiler). The test was performed using the Launchpad EXP430FR6989.
+
+##### Minimal Version (string, unsigned number and hex number)
+* CCS native
+* > RAM: 368 bytes - FRAM: 160 bytes - FRAM2: 1574 bytes - time(ms): 36.09
+* Embedded_Printf
+* > RAM: 160 bytes - FRAM: 72 bytes - FRAM2: 1238 bytes - time(ms): 36.05
+* Embedded_Printf (different style)
+* > RAM: 160 bytes - FRAM: 60 bytes - FRAM2: 800 bytes - time(ms): 36.07
+
+##### Float number enabled (string, unsigned number, hex number, float and sci notation with 4dp)
+* CCS native
+* > RAM: 682 bytes - FRAM: 512 bytes - FRAM2: 15348 bytes - time(ms): 75.6
+* Embedded_Printf
+* > RAM: 160 bytes - FRAM: 98 bytes - FRAM2: 3368 bytes - time(ms): 70.4
+* Embedded_Printf (different style)
+* > RAM: 160 bytes - FRAM: 74 bytes - FRAM2: 2664 bytes - time(ms): 70.4
+
+
 
 ### To do:
 - enable to configure library inside the main.c (or similar)
