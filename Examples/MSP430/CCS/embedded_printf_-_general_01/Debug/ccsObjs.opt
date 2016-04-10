@@ -1,1 +1,0 @@
-"./embedded_printf.obj" "./main.obj" "./serial_conf.obj" "../lnk_msp430g2553.cmd" -l"libc.a" 
