@@ -5,10 +5,12 @@
  *	http://e2e.ti.com/support/development_tools/code_composer_studio/f/81/p/30479/107146
  *
  *	Updated by: Haroldo Amaral - agaelema@globo.com
- *	Include v 0.2
- *	21/12/2015
+ *	Include v 0.3
+ *	09/04/2016
  */
- 
+
+#include "serial_conf.h"
+
 #ifndef		EMBEDDED_PRINTF
 #define		EMBEDDED_PRINTF
 
@@ -20,19 +22,14 @@
 #define		ENABLE_BINARY							// enable binary notation
 
 
-
 /*
  * PROTOTYPE OF FUNCTIONS
  */
-//void sendbyte(char byte);
-
 void putChar(unsigned char byte);
-
 void linesUp(unsigned char lines);
 
 int embedded_prints(char *string, unsigned int width, unsigned int pad);
 int embedded_ltoa(char *print_buf, signed long input, unsigned int base, unsigned int sg, unsigned int width, unsigned int pad, unsigned char letbase);
-
 
 #ifdef	ENABLE_PAD
 #define	ENABLE_PAD_

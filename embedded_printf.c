@@ -5,27 +5,13 @@
  *	http://e2e.ti.com/support/development_tools/code_composer_studio/f/81/p/30479/107146
  *
  *	Updated by: Haroldo Amaral - agaelema@globo.com
- *	Include v 0.2
- *	21/12/2015
+ *	Include v 0.3
+ *	09/04/2016
  */
 
 #include	"embedded_printf.h"
 #include	"serial_conf.h"
 #include	<stdarg.h>
-//#include	<msp430.h>
-
-
-///*
-// * Handle the serial code to transmit one byte
-// * Each microcontroler has a specific code
-// * Input:	char	byte (byte to be transmited)
-// * Output:	none
-// */
-//void sendbyte(char byte)
-//{
-//	while (!(IFG2 & UCA0TXIFG));    // USCI_A0 TX buffer ready?
-//	UCA0TXBUF = byte;                                    // Load Tx register that clear UCA0TXIFG
-//}
 
 
 /*
@@ -35,7 +21,7 @@
  */
 void putChar(unsigned char byte)
 {
-	sendbyte(byte);
+	serial_sendbyte(byte);
 }
 
 
