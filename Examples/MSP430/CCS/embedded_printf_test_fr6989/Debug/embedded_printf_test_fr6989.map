@@ -1,7 +1,7 @@
 ******************************************************************************
                   MSP430 Linker PC v4.4.7                      
 ******************************************************************************
->> Linked Sat Apr 09 23:19:20 2016
+>> Linked Mon Apr 11 03:06:20 2016
 
 OUTPUT FILE NAME:   <embedded_printf_test_fr6989.out>
 ENTRY POINT SYMBOL: "_c_int00_noargs_noexit_mpu"  address: 00004400
@@ -79,7 +79,7 @@ MEMORY CONFIGURATION
   INT53                 0000fffa   00000002  00000002  00000000  RWIX
   INT54                 0000fffc   00000002  00000002  00000000  RWIX
   RESET                 0000fffe   00000002  00000002  00000000  RWIX
-  FRAM2                 00010000   00014000  000020c6  00011f3a  RWIX
+  FRAM2                 00010000   00014000  0000210e  00011ef2  RWIX
 
 
 SECTION ALLOCATION MAP
@@ -232,42 +232,43 @@ SYSNMI     0    0000fffc    00000002
 .reset     0    0000fffe    00000002     
                   0000fffe    00000002     rts430x_lc_rd_eabi.lib : boot.obj (.reset)
 
-.text      0    00010000    000020c6     
-                  00010000    00001216     main.obj (.text:main)
-                  00011216    000002f2     embedded_printf.obj (.text:embedded_printf)
-                  00011508    00000280     embedded_printf.obj (.text:embedded_ftoa)
-                  00011788    00000130     rts430x_lc_rd_eabi.lib : fs_add.obj (.text)
-                  000118b8    00000124     embedded_printf.obj (.text:embedded_ltoa)
-                  000119dc    000000b6     rts430x_lc_rd_eabi.lib : fs_mpy.obj (.text)
-                  00011a92    0000008e                            : fs_div.obj (.text)
-                  00011b20    0000008c                            : cvtdf.obj (.text:__mspabi_cvtdf)
-                  00011bac    0000007e                            : fs_tol.obj (.text)
-                  00011c2a    00000072     embedded_printf.obj (.text:embedded_prints)
-                  00011c9c    0000006c     rts430x_lc_rd_eabi.lib : autoinit_wdt.obj (.text:_auto_init_hold_wdt)
-                  00011d08    00000058                            : div32u.obj (.text)
-                  00011d60    0000004a                            : fs_cmp.obj (.text)
-                  00011daa    0000004a                            : fs_ltof.obj (.text)
-                  00011df4    00000040                            : div32s.obj (.text)
-                  00011e34    0000003e                            : lsl32.obj (.text:l_lsl_const)
-                  00011e72    0000003e     embedded_printf.obj (.text:print_hexa)
-                  00011eb0    0000003e     embedded_printf.obj (.text:print_long)
-                  00011eee    0000003c     embedded_printf.obj (.text:print_binary)
-                  00011f2a    0000003c     embedded_printf.obj (.text:print_ulong)
-                  00011f66    0000002c     rts430x_lc_rd_eabi.lib : div16s.obj (.text)
-                  00011f92    0000002c     serial_conf.obj (.text:serial_configure)
-                  00011fbe    00000028     MSPMPU_INIT_LIB_CCS_msp430_large_code_restricted_data.lib : mpu_init.o (.text:__mpu_init)
-                  00011fe6    00000028     embedded_printf.obj (.text:print_float)
-                  0001200e    00000028     embedded_printf.obj (.text:print_scientific)
-                  00012036    00000024     rts430x_lc_rd_eabi.lib : fs_utof.obj (.text)
-                  0001205a    00000016                            : div16u.obj (.text)
-                  00012070    00000016                            : mult16_f5hw.obj (.text)
-                  00012086    00000010                            : lsl32.obj (.text:l_lsl)
-                  00012096    0000000e     serial_conf.obj (.text:serial_sendbyte)
-                  000120a4    0000000a     embedded_printf.obj (.text:print_string)
-                  000120ae    0000000a     rts430x_lc_rd_eabi.lib : fs_neg.obj (.text)
-                  000120b8    00000006     embedded_printf.obj (.text:putChar)
-                  000120be    00000004     rts430x_lc_rd_eabi.lib : pre_init.obj (.text:_system_pre_init)
-                  000120c2    00000004                            : exit.obj (.text:abort)
+.text      0    00010000    0000210e     
+                  00010000    00001212     main.obj (.text:main)
+                  00011212    000002f2     embedded_printf.obj (.text:embedded_printf)
+                  00011504    00000280     embedded_printf.obj (.text:embedded_ftoa)
+                  00011784    00000130     rts430x_lc_rd_eabi.lib : fs_add.obj (.text)
+                  000118b4    00000124     embedded_printf.obj (.text:embedded_ltoa)
+                  000119d8    000000b6     rts430x_lc_rd_eabi.lib : fs_mpy.obj (.text)
+                  00011a8e    0000008e                            : fs_div.obj (.text)
+                  00011b1c    0000008c                            : cvtdf.obj (.text:__mspabi_cvtdf)
+                  00011ba8    0000007e                            : fs_tol.obj (.text)
+                  00011c26    00000072     embedded_printf.obj (.text:embedded_prints)
+                  00011c98    0000006c     rts430x_lc_rd_eabi.lib : autoinit_wdt.obj (.text:_auto_init_hold_wdt)
+                  00011d04    00000058                            : div32u.obj (.text)
+                  00011d5c    0000004c                            : fs_toul.obj (.text)
+                  00011da8    0000004a                            : fs_cmp.obj (.text)
+                  00011df2    0000004a                            : fs_ltof.obj (.text)
+                  00011e3c    00000040                            : div32s.obj (.text)
+                  00011e7c    0000003e                            : lsl32.obj (.text:l_lsl_const)
+                  00011eba    0000003e     embedded_printf.obj (.text:print_hexa)
+                  00011ef8    0000003e     embedded_printf.obj (.text:print_long)
+                  00011f36    0000003c     embedded_printf.obj (.text:print_binary)
+                  00011f72    0000003c     embedded_printf.obj (.text:print_ulong)
+                  00011fae    0000002c     rts430x_lc_rd_eabi.lib : div16s.obj (.text)
+                  00011fda    0000002c     serial_conf.obj (.text:serial_configure)
+                  00012006    00000028     MSPMPU_INIT_LIB_CCS_msp430_large_code_restricted_data.lib : mpu_init.o (.text:__mpu_init)
+                  0001202e    00000028     embedded_printf.obj (.text:print_float)
+                  00012056    00000028     embedded_printf.obj (.text:print_scientific)
+                  0001207e    00000024     rts430x_lc_rd_eabi.lib : fs_utof.obj (.text)
+                  000120a2    00000016                            : div16u.obj (.text)
+                  000120b8    00000016                            : mult16_f5hw.obj (.text)
+                  000120ce    00000010                            : lsl32.obj (.text:l_lsl)
+                  000120de    0000000e     serial_conf.obj (.text:serial_sendbyte)
+                  000120ec    0000000a     embedded_printf.obj (.text:print_string)
+                  000120f6    0000000a     rts430x_lc_rd_eabi.lib : fs_neg.obj (.text)
+                  00012100    00000006     embedded_printf.obj (.text:putChar)
+                  00012106    00000004     rts430x_lc_rd_eabi.lib : pre_init.obj (.text:_system_pre_init)
+                  0001210a    00000004                            : exit.obj (.text:abort)
 
 
 GLOBAL SYMBOLS: SORTED ALPHABETICALLY BY Name 
@@ -531,7 +532,7 @@ address   name
 000009ce  AESAXIN_L                 
 000004be  BCD2BIN                   
 000004bc  BIN2BCD                   
-000120c2  C$$EXIT                   
+0001210a  C$$EXIT                   
 0000043e  CAPTIO0CTL                
 0000043f  CAPTIO0CTL_H              
 0000043e  CAPTIO0CTL_L              
@@ -1709,53 +1710,54 @@ UNDEFED   __TI_INITARRAY_Limit
 ffffffff  __binit__                 
 ffffffff  __c_args__                
 00000001  __mpu_enable              
-00011fbe  __mpu_init                
-0001178e  __mspabi_addf             
-00011d60  __mspabi_cmpf             
-00011b20  __mspabi_cvtdf            
-00011a92  __mspabi_divf             
-00011f66  __mspabi_divi             
-00011df4  __mspabi_divli            
-0001205a  __mspabi_divu             
-00011d08  __mspabi_divul            
-00011bac  __mspabi_fixfli           
-00011daa  __mspabi_fltlif           
-00012036  __mspabi_fltuf            
-000119dc  __mspabi_mpyf             
-00012070  __mspabi_mpyi_f5hw        
-000120ae  __mspabi_negf             
-00011f66  __mspabi_remi             
-00011df4  __mspabi_remli            
-0001205a  __mspabi_remu             
-00011d08  __mspabi_remul            
-00012086  __mspabi_slll             
-00011e6c  __mspabi_slll_1           
-00011e48  __mspabi_slll_10          
-00011e44  __mspabi_slll_11          
-00011e40  __mspabi_slll_12          
-00011e3c  __mspabi_slll_13          
-00011e38  __mspabi_slll_14          
-00011e34  __mspabi_slll_15          
-00011e68  __mspabi_slll_2           
-00011e64  __mspabi_slll_3           
-00011e60  __mspabi_slll_4           
-00011e5c  __mspabi_slll_5           
-00011e58  __mspabi_slll_6           
-00011e54  __mspabi_slll_7           
-00011e50  __mspabi_slll_8           
-00011e4c  __mspabi_slll_9           
-00011788  __mspabi_subf             
-00011c9c  _auto_init_hold_wdt       
+00012006  __mpu_init                
+0001178a  __mspabi_addf             
+00011da8  __mspabi_cmpf             
+00011b1c  __mspabi_cvtdf            
+00011a8e  __mspabi_divf             
+00011fae  __mspabi_divi             
+00011e3c  __mspabi_divli            
+000120a2  __mspabi_divu             
+00011d04  __mspabi_divul            
+00011ba8  __mspabi_fixfli           
+00011d5c  __mspabi_fixful           
+00011df2  __mspabi_fltlif           
+0001207e  __mspabi_fltuf            
+000119d8  __mspabi_mpyf             
+000120b8  __mspabi_mpyi_f5hw        
+000120f6  __mspabi_negf             
+00011fae  __mspabi_remi             
+00011e3c  __mspabi_remli            
+000120a2  __mspabi_remu             
+00011d04  __mspabi_remul            
+000120ce  __mspabi_slll             
+00011eb4  __mspabi_slll_1           
+00011e90  __mspabi_slll_10          
+00011e8c  __mspabi_slll_11          
+00011e88  __mspabi_slll_12          
+00011e84  __mspabi_slll_13          
+00011e80  __mspabi_slll_14          
+00011e7c  __mspabi_slll_15          
+00011eb0  __mspabi_slll_2           
+00011eac  __mspabi_slll_3           
+00011ea8  __mspabi_slll_4           
+00011ea4  __mspabi_slll_5           
+00011ea0  __mspabi_slll_6           
+00011e9c  __mspabi_slll_7           
+00011e98  __mspabi_slll_8           
+00011e94  __mspabi_slll_9           
+00011784  __mspabi_subf             
+00011c98  _auto_init_hold_wdt       
 00004400  _c_int00_noargs_noexit_mpu
 0000fffe  _reset_vector             
 00002360  _stack                    
-000120be  _system_pre_init          
-000120c2  abort                     
+00012106  _system_pre_init          
+0001210a  abort                     
 ffffffff  binit                     
-00011508  embedded_ftoa             
-000118b8  embedded_ltoa             
-00011216  embedded_printf           
-00011c2a  embedded_prints           
+00011504  embedded_ftoa             
+000118b4  embedded_ltoa             
+00011212  embedded_printf           
+00011c26  embedded_prints           
 00004400  fram_ipe_end              
 00004400  fram_ipe_start            
 00004400  fram_rw_start             
@@ -1765,16 +1767,16 @@ ffffffff  binit
 00001513  mpu_sam_value             
 00000440  mpu_segment_border1       
 00000440  mpu_segment_border2       
-00011eee  print_binary              
-00011fe6  print_float               
-00011e72  print_hexa                
-00011eb0  print_long                
-0001200e  print_scientific          
-000120a4  print_string              
-00011f2a  print_ulong               
-000120b8  putChar                   
-00011f92  serial_configure          
-00012096  serial_sendbyte           
+00011f36  print_binary              
+0001202e  print_float               
+00011eba  print_hexa                
+00011ef8  print_long                
+00012056  print_scientific          
+000120ec  print_string              
+00011f72  print_ulong               
+00012100  putChar                   
+00011fda  serial_configure          
+000120de  serial_sendbyte           
 
 
 GLOBAL SYMBOLS: SORTED BY Symbol Address 
@@ -3219,60 +3221,61 @@ address   name
 0000fffc  __TI_int54                
 0000fffe  _reset_vector             
 00010000  main                      
-00011216  embedded_printf           
-00011508  embedded_ftoa             
-00011788  __mspabi_subf             
-0001178e  __mspabi_addf             
-000118b8  embedded_ltoa             
-000119dc  __mspabi_mpyf             
-00011a92  __mspabi_divf             
-00011b20  __mspabi_cvtdf            
-00011bac  __mspabi_fixfli           
-00011c2a  embedded_prints           
-00011c9c  _auto_init_hold_wdt       
-00011d08  __mspabi_divul            
-00011d08  __mspabi_remul            
-00011d60  __mspabi_cmpf             
-00011daa  __mspabi_fltlif           
-00011df4  __mspabi_divli            
-00011df4  __mspabi_remli            
-00011e34  __mspabi_slll_15          
-00011e38  __mspabi_slll_14          
-00011e3c  __mspabi_slll_13          
-00011e40  __mspabi_slll_12          
-00011e44  __mspabi_slll_11          
-00011e48  __mspabi_slll_10          
-00011e4c  __mspabi_slll_9           
-00011e50  __mspabi_slll_8           
-00011e54  __mspabi_slll_7           
-00011e58  __mspabi_slll_6           
-00011e5c  __mspabi_slll_5           
-00011e60  __mspabi_slll_4           
-00011e64  __mspabi_slll_3           
-00011e68  __mspabi_slll_2           
-00011e6c  __mspabi_slll_1           
-00011e72  print_hexa                
-00011eb0  print_long                
-00011eee  print_binary              
-00011f2a  print_ulong               
-00011f66  __mspabi_divi             
-00011f66  __mspabi_remi             
-00011f92  serial_configure          
-00011fbe  __mpu_init                
-00011fe6  print_float               
-0001200e  print_scientific          
-00012036  __mspabi_fltuf            
-0001205a  __mspabi_divu             
-0001205a  __mspabi_remu             
-00012070  __mspabi_mpyi_f5hw        
-00012086  __mspabi_slll             
-00012096  serial_sendbyte           
-000120a4  print_string              
-000120ae  __mspabi_negf             
-000120b8  putChar                   
-000120be  _system_pre_init          
-000120c2  C$$EXIT                   
-000120c2  abort                     
+00011212  embedded_printf           
+00011504  embedded_ftoa             
+00011784  __mspabi_subf             
+0001178a  __mspabi_addf             
+000118b4  embedded_ltoa             
+000119d8  __mspabi_mpyf             
+00011a8e  __mspabi_divf             
+00011b1c  __mspabi_cvtdf            
+00011ba8  __mspabi_fixfli           
+00011c26  embedded_prints           
+00011c98  _auto_init_hold_wdt       
+00011d04  __mspabi_divul            
+00011d04  __mspabi_remul            
+00011d5c  __mspabi_fixful           
+00011da8  __mspabi_cmpf             
+00011df2  __mspabi_fltlif           
+00011e3c  __mspabi_divli            
+00011e3c  __mspabi_remli            
+00011e7c  __mspabi_slll_15          
+00011e80  __mspabi_slll_14          
+00011e84  __mspabi_slll_13          
+00011e88  __mspabi_slll_12          
+00011e8c  __mspabi_slll_11          
+00011e90  __mspabi_slll_10          
+00011e94  __mspabi_slll_9           
+00011e98  __mspabi_slll_8           
+00011e9c  __mspabi_slll_7           
+00011ea0  __mspabi_slll_6           
+00011ea4  __mspabi_slll_5           
+00011ea8  __mspabi_slll_4           
+00011eac  __mspabi_slll_3           
+00011eb0  __mspabi_slll_2           
+00011eb4  __mspabi_slll_1           
+00011eba  print_hexa                
+00011ef8  print_long                
+00011f36  print_binary              
+00011f72  print_ulong               
+00011fae  __mspabi_divi             
+00011fae  __mspabi_remi             
+00011fda  serial_configure          
+00012006  __mpu_init                
+0001202e  print_float               
+00012056  print_scientific          
+0001207e  __mspabi_fltuf            
+000120a2  __mspabi_divu             
+000120a2  __mspabi_remu             
+000120b8  __mspabi_mpyi_f5hw        
+000120ce  __mspabi_slll             
+000120de  serial_sendbyte           
+000120ec  print_string              
+000120f6  __mspabi_negf             
+00012100  putChar                   
+00012106  _system_pre_init          
+0001210a  C$$EXIT                   
+0001210a  abort                     
 ffffffff  __binit__                 
 ffffffff  __c_args__                
 ffffffff  binit                     
@@ -3283,4 +3286,4 @@ UNDEFED   __TI_Handler_Table_Limit
 UNDEFED   __TI_INITARRAY_Base       
 UNDEFED   __TI_INITARRAY_Limit      
 
-[1501 symbols]
+[1502 symbols]

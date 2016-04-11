@@ -16,7 +16,7 @@
 
 // list of suported Microcontrollers and their serial com
 #define		MSP430FR6989_USCI_A0			// P2.0 and P2.1
-//#define		MSP430G2553_USCI_A0
+//#define		MSP430G2553_USCI_A0					// P1.1 and P1.2
 
 // list of baudrate
 #define		BAUD_9600

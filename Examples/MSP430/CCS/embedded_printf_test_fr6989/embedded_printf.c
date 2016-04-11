@@ -5,13 +5,14 @@
  *	http://e2e.ti.com/support/development_tools/code_composer_studio/f/81/p/30479/107146
  *
  *	Updated by: Haroldo Amaral - agaelema@globo.com
- *	Include v 0.3
- *	09/04/2016
+ *	Include v 0.4
+ *	11/04/2016
  */
 
 #include	"embedded_printf.h"
 #include	"serial_conf.h"
 #include	<stdarg.h>
+#include 	<stdint.h>
 
 
 /*
@@ -19,15 +20,15 @@
  * Input:	unsigned char	byte (byte to be transmited)
  * Output:	none
  */
-void putChar(unsigned char byte)
+void putChar(uint8_t byte)
 {
 	serial_sendbyte(byte);
 }
 
 
-void linesUp(unsigned char lines)
+void linesUp(unsigned int lines)
 {
-	unsigned char i;
+	unsigned int i;
 	for (i = 0; i < lines; ++i)
 	{
 		putChar(0x1b);
@@ -42,9 +43,10 @@ void linesUp(unsigned char lines)
  * input:	char *string		(string to be printed)
  * 			unsigned int width	(limit the pad size)
  * 			unsigned int pad	(control the padding)
+ * return:	number of characters
  */
-//unsigned int embedded_prints(char *string, unsigned int width, unsigned int pad)
-int embedded_prints(char *string, unsigned int width, unsigned int pad)
+//int embedded_prints(char *string, unsigned int width, unsigned int pad)
+unsigned int embedded_prints(char *string, unsigned int width, unsigned int pad)
 {
 	unsigned int return_value = 0;
 	unsigned char padchar = ' ';
@@ -77,12 +79,12 @@ int embedded_prints(char *string, unsigned int width, unsigned int pad)
 	}
 #endif
 
-//	for (; *string; ++string)                      // Output the full string
 	while (*string)
 	{
 		putChar(*string);
 		++return_value;
-		*++string;
+//		*++string;
+		++string;
 	}
 
 #ifdef	ENABLE_PAD_
@@ -107,13 +109,14 @@ int embedded_prints(char *string, unsigned int width, unsigned int pad)
  *			unsigned char letbase	(base to select the character in the ASCII table)
  *	return:	int return_value		(number of characters printed - like standard printf)
  */
-int embedded_ltoa(char *print_buf, signed long input, unsigned int base, unsigned int sg, unsigned int width, unsigned int pad, unsigned char letbase)
+//int embedded_ltoa(char *print_buf, signed long input, unsigned int base, unsigned int sg, unsigned int width, unsigned int pad, unsigned char letbase)
+unsigned int embedded_ltoa(char *print_buf, int32_t input, unsigned int base, unsigned int sg, unsigned int width, unsigned int pad, unsigned char letbase)
 {
 	char *s;
 	char neg = 0;
-	unsigned long t;
-	unsigned long u = input;
-	int return_value = 0;
+	uint32_t t;
+	uint32_t u = input;
+	unsigned int return_value = 0;
 
 //	if (input == 0)
 //	{
@@ -159,7 +162,6 @@ int embedded_ltoa(char *print_buf, signed long input, unsigned int base, unsigne
 	s = print_buf + PRINT_BUF_LEN - 1;				// go to the end of buffer
 	*s = '\0';										// print the string terminator "\0"
 
-//	while (u)                                		// Convert the positive number
 	do
 	{
 		if (base != 2)								// if decimal or hexa
@@ -240,29 +242,26 @@ int embedded_ltoa(char *print_buf, signed long input, unsigned int base, unsigne
  *			double input			(number to be printed - use the casting "(double)" before the number
  *			signed int dp			(number of decimal places - between 1 and 4)
  *			unsigned int sci		(1 = scientific, 0 = non scientific notation)
- *	return:	int return_value		(number of characters printed - like standard printf)
+ *	return:	unsigned int return_value		(number of characters printed - like standard printf)
  */
-//int embedded_ftoa(char *print_buf, volatile double input, signed int dp, unsigned int sci)
-int embedded_ftoa(char *print_buf, double input, signed int dp, unsigned int sci)
+//int embedded_ftoa(char *print_buf, double input, signed int dp, unsigned int sci)
+unsigned int embedded_ftoa(char *print_buf, double input, signed int dp, unsigned int sci)
 {
 	char *s;
 	unsigned int neg = 0;
-	unsigned long t;
-//	volatile signed long integer;
-//	volatile unsigned long decimal;
-//	volatile int Exp = 0;
-//	volatile int Exp_sg = 0;
-	signed long integer;
+	uint32_t t;
+	int32_t integer;
 
 #ifdef	ENABLE_EXTRA_DECIMAL_PLACE_
-	unsigned long long decimal;
+	uint64_t decimal;
 #else
-	unsigned long decimal;
+	uint32_t decimal;
 #endif
 	int Exp = 0;
 	int Exp_sg = 0;
 
-	int return_value = 0;
+//	int return_value = 0;
+	unsigned int return_value = 0;
 
 #ifdef	ENABLE_EXTRA_DECIMAL_PLACE_
 	if (dp > 9) {dp = 9;}
@@ -271,20 +270,6 @@ int embedded_ftoa(char *print_buf, double input, signed int dp, unsigned int sci
 #endif
 	if (dp < 1) {dp = 1;}
 
-//	if (input == 0)                                                                       // If output char is 0, then just output it with padding and width.
-//	{
-//		print_buf[0] = '0';
-//		print_buf[1] = '.';
-//		unsigned int ii;
-//		for (ii = 0; ii < dp; ++ii) {
-//			print_buf[2 + ii] = '0';
-//		}
-//		print_buf[2 + dp] = '\0';                     // Always remenber to put string end
-//
-//		return (2 + dp);
-//	}
-
-//	volatile double number;
 	double number;
 	number = input;
 
@@ -303,7 +288,6 @@ int embedded_ftoa(char *print_buf, double input, signed int dp, unsigned int sci
 				Exp++;
 			}
 		}
-//		if (number < 1)
 		if ((number < 1) && (number != 0))
 		{
 			while (number < 1)
@@ -318,20 +302,21 @@ int embedded_ftoa(char *print_buf, double input, signed int dp, unsigned int sci
 		}
 	}
 
-	integer = (signed long)number;
+	integer = (int32_t)number;
 	number = number - (double)integer;
+
 
 	unsigned int ii;
 #ifdef	ENABLE_EXTRA_DECIMAL_PLACE_
-	unsigned long mult = 1;
+	uint32_t mult = 1;
 #else
-	unsigned int mult = 1;
+	uint16_t mult = 1;
 #endif
 	for (ii = 0; ii < dp; ++ii) {		// calculate the multiplier to convert decimal in integer value with desired dp
 		mult *= 10;
 	}
 
-	decimal = (signed long)(number * (double)mult);
+	decimal = (uint32_t)(number * (double)mult);
 
 	s = print_buf + PRINT_BUF_LEN - 1;
 	*s = '\0';
@@ -353,7 +338,6 @@ int embedded_ftoa(char *print_buf, double input, signed int dp, unsigned int sci
 		*--s = 'e';
 	}
 
-//	while (decimal)
 	while (dp)                               	// convert the portion after the dot "."
 	{
 		t = decimal % 10;
@@ -366,7 +350,6 @@ int embedded_ftoa(char *print_buf, double input, signed int dp, unsigned int sci
 
 	*--s = '.';									// put the dot separator
 
-//	while (integer) // Convert the positive int to string with whatever counting base, dec, or hex.
 	do											// convert the portion before the dot "."
 	{
 		t = integer % 10;
@@ -375,7 +358,6 @@ int embedded_ftoa(char *print_buf, double input, signed int dp, unsigned int sci
 		*--s = t + '0';
 		integer /= 10;
 	}while(integer);
-//	}
 
 	if (neg)									// if negative
 	{
@@ -408,42 +390,24 @@ int embedded_ftoa(char *print_buf, double input, signed int dp, unsigned int sci
  *			float input				(number to be printed - use the casting "(float)" before the number
  *			signed int dp			(number of decimal places - between 1 and 4)
  *			unsigned int sci		(1 = scientific, 0 = non scientific notation)
- *	return:	int return_value		(number of characters printed - like standard printf)
+ *	return:	unsigned int return_value		(number of characters printed - like standard printf)
  */
-//int embedded_ftoa(char *print_buf, volatile float input, signed int dp, unsigned int sci)
-int embedded_ftoa(char *print_buf, float input, signed int dp, unsigned int sci)
+//int embedded_ftoa(char *print_buf, float input, signed int dp, unsigned int sci)
+unsigned int embedded_ftoa(char *print_buf, float input, signed int dp, unsigned int sci)
 {
 	char *s;
 	unsigned int neg = 0;
 	unsigned long t;
-//	volatile signed long integer;
-//	volatile unsigned long decimal;
-//	volatile int Exp = 0;
-//	volatile int Exp_sg = 0;
-	signed long integer;
-	unsigned long decimal;
+	int32_t integer;
+	uint32_t decimal;
 	int Exp = 0;
 	int Exp_sg = 0;
 
-	int return_value = 0;
+	unsigned int return_value = 0;
 
 	if (dp > 4) {dp = 4;}
 	if (dp < 1) {dp = 1;}
 
-//	if (input == 0)                                                                       // If output char is 0, then just output it with padding and width.
-//	{
-//		print_buf[0] = '0';
-//		print_buf[1] = '.';
-//		unsigned int ii;
-//		for (ii = 0; ii < dp; ++ii) {
-//			print_buf[2 + ii] = '0';
-//		}
-//		print_buf[2 + dp] = '\0';                     // Always remenber to put string end
-//
-//		return (2 + dp);
-//	}
-
-//	volatile float number;
 	float number;
 	number = input;
 
@@ -462,7 +426,6 @@ int embedded_ftoa(char *print_buf, float input, signed int dp, unsigned int sci)
 				Exp++;
 			}
 		}
-//		if (number < 1)
 		if ((number < 1) && (number != 0))
 		{
 			while (number < 1)
@@ -477,7 +440,7 @@ int embedded_ftoa(char *print_buf, float input, signed int dp, unsigned int sci)
 		}
 	}
 
-	integer = (signed long)number;
+	integer = (int32_t)number;
 	number = number - (float)integer;
 
 	unsigned int ii;
@@ -486,7 +449,7 @@ int embedded_ftoa(char *print_buf, float input, signed int dp, unsigned int sci)
 		mult *= 10;
 	}
 
-	decimal = (signed long)(number * (float)mult);
+	decimal = (uint32_t)(number * (float)mult);
 
 	s = print_buf + PRINT_BUF_LEN - 1;
 	*s = '\0';
@@ -508,7 +471,6 @@ int embedded_ftoa(char *print_buf, float input, signed int dp, unsigned int sci)
 		*--s = 'e';
 	}
 
-//	while (decimal)
 	while (dp)                               	// convert the portion after the dot "."
 	{
 		t = decimal % 10;
@@ -521,7 +483,6 @@ int embedded_ftoa(char *print_buf, float input, signed int dp, unsigned int sci)
 
 	*--s = '.';									// put the dot separator
 
-//	while (integer) // Convert the positive int to string with whatever counting base, dec, or hex.
 	do											// convert the portion before the dot "."
 	{
 		t = integer % 10;
@@ -530,7 +491,6 @@ int embedded_ftoa(char *print_buf, float input, signed int dp, unsigned int sci)
 		*--s = t + '0';
 		integer /= 10;
 	}while(integer);
-//	}
 
 	if (neg)									// if negative
 	{
@@ -570,9 +530,9 @@ int embedded_ftoa(char *print_buf, float input, signed int dp, unsigned int sci)
  * 					float variables limited to 4 decimal places in standard (reduce size and performance)
  * 					float variables limited to 9 decimal places in precision (reduce size and performance)
  * Input:		char *format			(like standard "printf( )")
- *	return:		int return_value		(number of characters printed - like standard printf)
+ * return:		int return_value		(number of characters printed - like standard printf)
  */
-int embedded_printf(char *format, ...)
+unsigned int embedded_printf(char *format, ...)
 {
 	char print_buf[PRINT_BUF_LEN];
 	unsigned int width, pad;
@@ -620,22 +580,22 @@ int embedded_printf(char *format, ...)
 				continue;
 			}
 			if (*format == 'd') {				// if signed long - call the respective function
-				return_value += embedded_ltoa(print_buf, va_arg(args, long), DECIMAL, SIGNED, width, pad, LOWER_CASE);
+				return_value += embedded_ltoa(print_buf, va_arg(args, int32_t), DECIMAL, SIGNED, width, pad, LOWER_CASE);
 				return_value += embedded_prints(print_buf, width, pad);
 				continue;
 			}
 			if (*format == 'x') {				// if hexadecimal (lowercase) - call the respective function
-				return_value += embedded_ltoa(print_buf, va_arg(args, long), HEXADEC, NON_SIGNED, width, pad, LOWER_CASE);
+				return_value += embedded_ltoa(print_buf, va_arg(args, int32_t), HEXADEC, NON_SIGNED, width, pad, LOWER_CASE);
 				return_value += embedded_prints(print_buf, width, pad);
 				continue;
 			}
 			if (*format == 'X') {				// if hexadecimal (uppercase) - call the respective function
-				return_value += embedded_ltoa(print_buf, va_arg(args, long), HEXADEC, NON_SIGNED, width, pad, UPPER_CASE);
+				return_value += embedded_ltoa(print_buf, va_arg(args, int32_t), HEXADEC, NON_SIGNED, width, pad, UPPER_CASE);
 				return_value += embedded_prints(print_buf, width, pad);
 				continue;
 			}
 			if (*format == 'u') {				// if unsigned long - call the respective function
-				return_value += embedded_ltoa(print_buf, va_arg(args, long), DECIMAL, NON_SIGNED, width, pad, LOWER_CASE);
+				return_value += embedded_ltoa(print_buf, va_arg(args, int32_t), DECIMAL, NON_SIGNED, width, pad, LOWER_CASE);
 				return_value += embedded_prints(print_buf, width, pad);
 				continue;
 			}
@@ -668,7 +628,7 @@ int embedded_printf(char *format, ...)
 #endif
 #ifdef	ENABLE_BINARY_
 			if (*format == 'b') {				// if binary - call the respective function
-				return_value += embedded_ltoa(print_buf, va_arg(args, long), BINARY, NON_SIGNED, width, pad, LOWER_CASE);
+				return_value += embedded_ltoa(print_buf, va_arg(args, int32_t), BINARY, NON_SIGNED, width, pad, LOWER_CASE);
 				return_value += embedded_prints(print_buf, width, 0);
 				continue;
 			}
@@ -792,15 +752,16 @@ unsigned int print_scientific(float number, int dp)
 void embedded_string2number(unsigned char *string, double *number)
 {
 	unsigned int neg = 0;			// indicate a negative number
-	unsigned long integer = 0;		// save the integer part
-	unsigned long decimal = 0;		// save the decimal part
-	volatile unsigned long decimal_count = 1;		// count the number of digits
+	uint32_t integer = 0;		// save the integer part
+	uint32_t decimal = 0;		// save the decimal part
+	volatile uint32_t decimal_count = 1;		// count the number of digits
 	double number_float = 0;			// used to calculate the number
 
 	if (*string == '-')			// check if negative
 	{
 		++neg;
-		*string++;
+//		*string++;
+		string++;
 	}
 	while ((*string != '.') && (*string))// convert the integer part before the '.'
 	{
@@ -809,19 +770,22 @@ void embedded_string2number(unsigned char *string, double *number)
 		integer *= 10;
 		integer += *string - '0';
 //			}
-		*string++;
+//		*string++;
+		string++;
 	}
 
 	if (*string == '.')		// verify the '.'
 			{
-		*string++;
+//		*string++;
+		string++;
 		decimal_count = 1;
 		while (*string)		// convert decimal part
 		{
 			decimal *= 10;
 			decimal += *string - '0';
 			decimal_count *= 10;
-			*string++;
+//			*string++;
+			string++;
 		}
 	}
 	number_float = (double) integer + (double) decimal / (double) decimal_count;
@@ -835,15 +799,16 @@ void embedded_string2number(unsigned char *string, double *number)
 void embedded_string2number(unsigned char *string, float *number)
 {
 	unsigned int neg = 0;			// indicate a negative number
-	unsigned long integer = 0;		// save the integer part
-	unsigned long decimal = 0;		// save the decimal part
-	volatile unsigned long decimal_count = 1;		// count the number of digits
+	uint32_t integer = 0;		// save the integer part
+	uint32_t decimal = 0;		// save the decimal part
+	volatile uint32_t decimal_count = 1;		// count the number of digits
 	float number_float = 0;			// used to calculate the number
 
 	if (*string == '-')			// check if negative
 	{
 		++neg;
-		*string++;
+//		*string++;
+		string++;
 	}
 	while ((*string != '.') && (*string))// convert the integer part before the '.'
 	{
@@ -852,23 +817,27 @@ void embedded_string2number(unsigned char *string, float *number)
 		integer *= 10;
 		integer += *string - '0';
 //			}
-		*string++;
+//		*string++;
+		string++;
 	}
 
 	if (*string == '.')		// verify the '.'
-			{
-		*string++;
+	{
+//		*string++;
+		string++;
 		decimal_count = 1;
 		while (*string)		// convert decimal part
 		{
 			decimal *= 10;
 			decimal += *string - '0';
 			decimal_count *= 10;
-			*string++;
+//			*string++;
+			string++;
 		}
 	}
 	number_float = (float) integer + (float) decimal / (float) decimal_count;
-	if (neg) {
+	if (neg)
+	{
 		number_float = number_float * (-1);
 	}
 	*number = number_float;

@@ -5,11 +5,13 @@
  *	http://e2e.ti.com/support/development_tools/code_composer_studio/f/81/p/30479/107146
  *
  *	Updated by: Haroldo Amaral - agaelema@globo.com
- *	Include v 0.3
- *	09/04/2016
+ *	Include v 0.4
+ *	11/04/2016
  */
 
-#include "serial_conf.h"
+#include	<stdint.h>
+#include 	"serial_conf.h"
+
 
 #ifndef		EMBEDDED_PRINTF
 #define		EMBEDDED_PRINTF
@@ -25,11 +27,11 @@
 /*
  * PROTOTYPE OF FUNCTIONS
  */
-void putChar(unsigned char byte);
-void linesUp(unsigned char lines);
+void putChar(uint8_t byte);
+void linesUp(unsigned int lines);
 
-int embedded_prints(char *string, unsigned int width, unsigned int pad);
-int embedded_ltoa(char *print_buf, signed long input, unsigned int base, unsigned int sg, unsigned int width, unsigned int pad, unsigned char letbase);
+unsigned int embedded_prints(char *string, unsigned int width, unsigned int pad);
+unsigned int embedded_ltoa(char *print_buf, int32_t input, unsigned int base, unsigned int sg, unsigned int width, unsigned int pad, unsigned char letbase);
 
 #ifdef	ENABLE_PAD
 #define	ENABLE_PAD_
@@ -43,13 +45,13 @@ int embedded_ltoa(char *print_buf, signed long input, unsigned int base, unsigne
 
 #ifdef PRECISION_FLOAT
 #define PRECISION_FLOAT_
-int embedded_ftoa(char *print_buf, double input, signed int dp, unsigned int sci);
+unsigned int embedded_ftoa(char *print_buf, double input, signed int dp, unsigned int sci);
 #else
-int embedded_ftoa(char *print_buf, float input, signed int dp, unsigned int sci);
+unsigned int embedded_ftoa(char *print_buf, float input, signed int dp, unsigned int sci);
 #endif
 #endif
 
-int embedded_printf(char *format, ...);
+unsigned int embedded_printf(char *format, ...);
 
 unsigned int print_string(char *string);
 unsigned int print_long(long number);
@@ -76,19 +78,11 @@ unsigned int print_scientific(float number, int dp);
 
 
 #ifdef	PRECISION_FLOAT_
-//void embedded_string2number(char *string, double *number);
 void embedded_string2number(unsigned char *string, double *number);
 #else
-//void embedded_string2number(char *string, float *number);
 void embedded_string2number(unsigned char *string, float *number);
 #endif
 
-
-//#define		ENABLE_PAD								// enable padding in functions
-//#define		ENABLE_FLOAT							// enable print float/double
-//#define		PRECISION_FLOAT							// select precision version - use double variable
-//#define		ENABLE_EXTRA_DECIMAL_PLACE				// enabled = 9 dp, disabled = 4 dp
-//#define		ENABLE_BINARY							// enable binary notation
 
 #define		BINARY			2						// number identificator
 #define		DECIMAL			10
@@ -110,6 +104,5 @@ void embedded_string2number(unsigned char *string, float *number);
 
 //#define		WITH_LABEL		1
 //#define		WITHOUT_LABEL	0
-
 
 #endif

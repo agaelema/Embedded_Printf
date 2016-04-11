@@ -5,32 +5,10 @@
 //	http://e2e.ti.com/support/development_tools/code_composer_studio/f/81/p/30479/107146
 //
 //  Updated by: Haroldo Amaral - agaelema@globo.com
-//	v0.14 - 22/02/2016
-//
-//	log:	. test the initial function
-//			. add function "sendbyte()"
-//			. add function to float number - beta
-//			. add scientific notation to double/float - "embedded_ftoa()" function changed
-//			. remove old commentecodes
-//			. add binary notation (max of 32bits)
-//			. transform basic functions to convert numbers in strings (not send)
-//			. remove old commented codes
-//			. some fixes in functions
-//			. remove old commented codes
-//			. rename functions and add #defines
-//			. fix some bugs
-//			. remove some volatile parameters
-//			. add #define to enable or not the padding
-//			. remove _nop() function of msp430 used during debug
-//			. rename some variables
-//			. some optimizations
-//				remove (comment) the verificarion "(if == 0) in numbers conversion
-//			. add #defines to control functions
-//			. change to include version
-//			. add function to conver string in number (float/double)
-//			+ do little changes
+//	v0.16 - 11/04/2016
 //
 //******************************************************************************
+
 #include	<msp430.h>
 
 /*
@@ -72,8 +50,8 @@ void main(void) {
 
 	while (1)
 	{
-		char buffer_temp[32];
-		volatile int return_value = 0;
+		char buffer_temp[33];
+		volatile unsigned int return_value = 0;
 
 		return_value = embedded_printf("\r\n");
 		embedded_printf("\r\n");
@@ -504,13 +482,13 @@ void main(void) {
 		return_value = embedded_printf("%u", (unsigned long)987654321);
 		embedded_printf("\r\n- return_value = %u\r\n", (long)return_value);
 		return_value = embedded_ltoa(buffer_temp, 987654321, DECIMAL, NON_SIGNED, 0, NON_PAD, LOWER_CASE);
-		embedded_printf("\r\n- return_value = %u\r\n", return_value);
+		embedded_printf("\r\n- return_value = %u\r\n", (long)return_value);
 		return_value = print_ulong(987654321);
-		embedded_printf("\r\n- return_value = %u\r\n", return_value);
+		embedded_printf("\r\n- return_value = %u\r\n", (long)return_value);
 		return_value = embedded_prints("987654321", 0, NON_PAD);
-		embedded_printf("\r\n- return_value = %u\r\n", return_value);
+		embedded_printf("\r\n- return_value = %u\r\n", (long)return_value);
 		return_value = print_string("987654321");
-		embedded_printf("\r\n- return_value = %u\r\n", return_value);
+		embedded_printf("\r\n- return_value = %u\r\n", (long)return_value);
 
 #ifdef	TEST_FLOAT
 		print_string("\r\n");
