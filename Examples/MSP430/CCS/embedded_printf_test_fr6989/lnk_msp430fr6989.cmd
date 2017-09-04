@@ -1,5 +1,5 @@
 /* ============================================================================ */
-/* Copyright (c) 2016, Texas Instruments Incorporated                           */
+/* Copyright (c) 2017, Texas Instruments Incorporated                           */
 /*  All rights reserved.                                                        */
 /*                                                                              */
 /*  Redistribution and use in source and binary forms, with or without          */
@@ -44,7 +44,7 @@
 /* -heap   0x0100                                   HEAP AREA SIZE            */
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-/* Version: 1.185                                                             */
+/* Version: 1.201                                                             */
 /*----------------------------------------------------------------------------*/
 
 /****************************************************************************/
@@ -162,14 +162,14 @@ SECTIONS
 #endif
 
     .text:_isr        : {}  > FRAM          /* Code ISRs                         */
-#ifndef __LARGE_DATA_MODEL__
+#ifndef __LARGE_CODE_MODEL__
     .text             : {} > FRAM           /* Code                              */
 #else
     .text             : {} >> FRAM2 | FRAM  /* Code                              */
 #endif
-#ifdef __TI_COMPILER_VERSION
-  #if __TI_COMPILER_VERSION >= 15009000
-    #ifndef __LARGE_DATA_MODEL__
+#ifdef __TI_COMPILER_VERSION__
+  #if __TI_COMPILER_VERSION__ >= 15009000
+    #ifndef __LARGE_CODE_MODEL__
     .TI.ramfunc : {} load=FRAM, run=RAM, table(BINIT)
     #else
     .TI.ramfunc : {} load=FRAM | FRAM2, run=RAM, table(BINIT)
@@ -192,10 +192,10 @@ SECTIONS
     .stack      : {} > RAM (HIGH)           /* Software system stack             */
     .tinyram    : {} > TINYRAM              /* Tiny RAM                          */
 
-    .infoA     : {} > INFOA              /* MSP430 INFO FRAM  Memory segments */
-    .infoB     : {} > INFOB
-    .infoC     : {} > INFOC
-    .infoD     : {} > INFOD
+    .infoA (NOLOAD) : {} > INFOA              /* MSP430 INFO FRAM  Memory segments */
+    .infoB (NOLOAD) : {} > INFOB
+    .infoC (NOLOAD) : {} > INFOC
+    .infoD (NOLOAD) : {} > INFOD
 
     /* MSP430 Interrupt vectors          */
     .int00       : {}               > INT00

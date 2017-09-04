@@ -121,7 +121,8 @@ void serial_sendbyte(char byte)
 
 #ifdef	G2553			// start of G2553 definitions
 #ifdef		USCI_UCA0
-	while (!(IFG2 & UCA0TXIFG));    // USCI_A0 TX buffer ready? - not using interruption
+//	while (!(IFG2 & UCA0TXIFG));    // USCI_A0 TX buffer ready? - not using interruption
+    while (!(IFG2 & UCA0TXIFG));    // USCI_A0 TX buffer ready? - not using interruption
 	UCA0TXBUF = byte;               // Load Tx register that clear UCA0TXIFG
 #endif
 #endif						// end of G2553 definitions

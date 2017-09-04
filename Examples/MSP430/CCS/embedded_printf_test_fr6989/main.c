@@ -11,16 +11,16 @@
 
 #include	<msp430.h>
 
-/*
- * currently controling just functions inside the main
- * - need be equal to configuration inside "embedded_printf.h"
- * TODO: defines controlling the configuration of lib...
- */
-#define		ENABLE_PAD								// enable padding in functions
-#define		ENABLE_FLOAT							// enable print float/double
-//#define		PRECISION_FLOAT							// select precision version - use double variable
-//#define		ENABLE_EXTRA_DECIMAL_PLACE				// enabled = 9 dp, disabled = 4 dp
-#define		ENABLE_BINARY							// enable binary notation
+///*
+// * currently controling just functions inside the main
+// * - need be equal to configuration inside "embedded_printf.h"
+// * TODO: defines controlling the configuration of lib...
+// */
+//#define		ENABLE_PAD								// enable padding in functions
+//#define		ENABLE_FLOAT							// enable print float/double
+////#define		PRECISION_FLOAT							// select precision version - use double variable
+////#define		ENABLE_EXTRA_DECIMAL_PLACE				// enabled = 9 dp, disabled = 4 dp
+//#define		ENABLE_BINARY							// enable binary notation
 
 /*
  * Control Test
@@ -31,30 +31,37 @@
 /*
  * currently general configurations must be setted inside the "embedded_printf.h"
  */
-#include	"embedded_printf.h"
+#include    "embedded_printf.h"
 
 
 void main(void) {
 	WDTCTL = WDTPW + WDTHOLD;							// Para o watchdog timer
 
+	/* configure the UART to embedded_prinf functions */
 	serial_configure();
 
-	PJSEL0 |= BIT4 | BIT5;                    // configure pin for XT1
+	PJSEL0 |= BIT4 | BIT5;                  // configure pin for XT1
 
 	// Disable the GPIO power-on default high-impedance mode to activate
 	PM5CTL0 &= ~LOCKLPM5;
 
-	// XT1 Setup
-	CSCTL0_H = CSKEY >> 8;                    // Unlock CS registers
-	CSCTL2 = SELA__LFXTCLK | SELS__DCOCLK | SELM__DCOCLK;
-	CSCTL3 = DIVA__1 | DIVS__1 | DIVM__1;     // Set all dividers
-	CSCTL4 &= ~LFXTOFF;
+	/*
+	 * MCLK and SMCLK = DCOCLK 8MHz
+	 * ACLK = LFXT
+	 */
+	CSCTL0_H = CSKEY >> 8;                    // Unlock clock registers
+	CSCTL1 = DCOFSEL_3 | DCORSEL;             // Set DCO to 8MHz
+	CSCTL2 = SELA__LFXTCLK |                // ACLK source: LFXT
+	        SELS__DCOCLK |                 // SMCLK source : DCOCLK
+	        SELM__DCOCLK;                  // MCLK source: DCOCLK
+	CSCTL3 = DIVA__1 | DIVS__1 | DIVM__1;   // Set all dividers
+	CSCTL4 &= ~LFXTOFF;                     // enable LFXT
 	do
 	{
-		CSCTL5 &= ~LFXTOFFG;                    // Clear XT1 fault flag
-		SFRIFG1 &= ~OFIFG;
-	}while (SFRIFG1&OFIFG);                   // Test oscillator fault flag
-	CSCTL0_H = 0;                             // Lock CS registers
+	    CSCTL5 &= ~LFXTOFFG;                // Clear XT1 fault flag
+	    SFRIFG1 &= ~OFIFG;
+	}while (SFRIFG1&OFIFG);                 // Test oscillator fault flag
+	CSCTL0_H = 0;                           // Lock CS registers
 
 
 	/* variables to test */

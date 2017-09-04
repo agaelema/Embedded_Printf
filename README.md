@@ -138,3 +138,8 @@ To evaluate the performance I compared the time taken to perform the "Embedded_p
 
 ### To do:
 - enable to configure library inside the main.c (or similar)
+
+
+### DISCLAIMER
+
+This software is provided 'as is' with no explicit or implied warranties in respect of its properties, including, but not limited to, correctness and/or fitness for purpose.

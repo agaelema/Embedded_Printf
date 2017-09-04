@@ -1,25 +1,28 @@
-/*
- *	Embedded version of "printf" function
+/******************************************************************************
+ *  Embedded version of "printf( )" function
+ *  - with similar functions but more efficient
  *
- *	Based in this link:
- *	http://e2e.ti.com/support/development_tools/code_composer_studio/f/81/p/30479/107146
+ *  author: Haroldo Amaral - agaelema@globo.com
+ *  v0.5 - 2017/08/20
  *
- *	Updated by: Haroldo Amaral - agaelema@globo.com
- *	Include v 0.4
- *	11/04/2016
- */
+ *  Based in this link:
+ *  http://e2e.ti.com/support/development_tools/code_composer_studio/f/81/p/30479/107146
+ ******************************************************************************
+ *  log:  . change some "#ifdef" to "#if defined ( )"
+ ******************************************************************************/
 
-#include	"embedded_printf.h"
-#include	"serial_conf.h"
-#include	<stdarg.h>
-#include 	<stdint.h>
+#include    "embedded_printf.h"
+#include    "serial_conf.h"
+
+#include    <stdarg.h>
+#include    <stdint.h>
 
 
-/*
+/******************************************************************************
  * Call the specific function to send data
  * Input:	unsigned char	byte (byte to be transmited)
  * Output:	none
- */
+ ******************************************************************************/
 void putChar(uint8_t byte)
 {
 	serial_sendbyte(byte);
@@ -38,13 +41,13 @@ void linesUp(unsigned int lines)
 }
 
 
-/*
+/******************************************************************************
  * Print a String in the serial port
  * input:	char *string		(string to be printed)
  * 			unsigned int width	(limit the pad size)
  * 			unsigned int pad	(control the padding)
  * return:	number of characters
- */
+ ******************************************************************************/
 //int embedded_prints(char *string, unsigned int width, unsigned int pad)
 unsigned int embedded_prints(char *string, unsigned int width, unsigned int pad)
 {
@@ -98,7 +101,7 @@ unsigned int embedded_prints(char *string, unsigned int width, unsigned int pad)
 }
 
 
-/*
+/******************************************************************************
  *	Print an integer number (signed or unsigned) with max size of 32bits (long)
  *	input:	char *print_buf			(pointer to the buffer when the string will be saved)
  *			signed long input		(number to be printed - use the casting "(long)" before the number
@@ -108,7 +111,7 @@ unsigned int embedded_prints(char *string, unsigned int width, unsigned int pad)
  *			unsigned int pad		(control the padding)
  *			unsigned char letbase	(base to select the character in the ASCII table)
  *	return:	int return_value		(number of characters printed - like standard printf)
- */
+ ******************************************************************************/
 //int embedded_ltoa(char *print_buf, signed long input, unsigned int base, unsigned int sg, unsigned int width, unsigned int pad, unsigned char letbase)
 unsigned int embedded_ltoa(char *print_buf, int32_t input, unsigned int base, unsigned int sg, unsigned int width, unsigned int pad, unsigned char letbase)
 {
@@ -223,7 +226,8 @@ unsigned int embedded_ltoa(char *print_buf, int32_t input, unsigned int base, un
 
 	char *buffer_end = print_buf + PRINT_BUF_LEN - 1;
 	int count;;
-	count = (int)buffer_end - (int)s;
+//	count = (int)buffer_end - (int)s;
+	count = (int)(buffer_end - s);
 
 	int xx;
 	for (xx = 0; xx < count + 1; xx++) {
@@ -236,14 +240,14 @@ unsigned int embedded_ltoa(char *print_buf, int32_t input, unsigned int base, un
 
 #ifdef	ENABLE_FLOAT_
 #ifdef 	PRECISION_FLOAT_
-/*
+/******************************************************************************
  *	Print a float number (double)
  *	input:	char *print_buf			(pointer to the buffer when the string will be saved)
  *			double input			(number to be printed - use the casting "(double)" before the number
  *			signed int dp			(number of decimal places - between 1 and 4)
  *			unsigned int sci		(1 = scientific, 0 = non scientific notation)
  *	return:	unsigned int return_value		(number of characters printed - like standard printf)
- */
+ ******************************************************************************/
 //int embedded_ftoa(char *print_buf, double input, signed int dp, unsigned int sci)
 unsigned int embedded_ftoa(char *print_buf, double input, signed int dp, unsigned int sci)
 {
@@ -384,14 +388,14 @@ unsigned int embedded_ftoa(char *print_buf, double input, signed int dp, unsigne
 	return return_value;
 }
 #else
-/*
+/******************************************************************************
  *	Print a float number (float)
  *	input:	char *print_buf			(pointer to the buffer when the string will be saved)
  *			float input				(number to be printed - use the casting "(float)" before the number
  *			signed int dp			(number of decimal places - between 1 and 4)
  *			unsigned int sci		(1 = scientific, 0 = non scientific notation)
  *	return:	unsigned int return_value		(number of characters printed - like standard printf)
- */
+ ******************************************************************************/
 //int embedded_ftoa(char *print_buf, float input, signed int dp, unsigned int sci)
 unsigned int embedded_ftoa(char *print_buf, float input, signed int dp, unsigned int sci)
 {
@@ -520,7 +524,7 @@ unsigned int embedded_ftoa(char *print_buf, float input, signed int dp, unsigned
 #endif
 
 
-/*
+/******************************************************************************
  * Embedded version of the "printf()" function - use the same parameters
  * 		"u" (unsigned long), "d" (signed long), "x/X" (hexadecimal)
  * 		"b" (binary), "f" (float), "e" (float in scientific notation)
@@ -531,7 +535,7 @@ unsigned int embedded_ftoa(char *print_buf, float input, signed int dp, unsigned
  * 					float variables limited to 9 decimal places in precision (reduce size and performance)
  * Input:		char *format			(like standard "printf( )")
  * return:		int return_value		(number of characters printed - like standard printf)
- */
+ ******************************************************************************/
 unsigned int embedded_printf(char *format, ...)
 {
 	char print_buf[PRINT_BUF_LEN];
@@ -562,14 +566,16 @@ unsigned int embedded_printf(char *format, ...)
 #endif
 			}
 			for (; *format >= '0' && *format <= '9'; ++format) {
-				width *= 10;
+//				width *= 10;
+				width = (width << 3) + (width << 1);	// x * 10 = x * 8 + x * 2
 				width += *format - '0';
 			}
 
 			if (*format == '.') {
 				++format;
 				for (; *format >= '0' && *format <= '9'; ++format) {
-					dp *= 10;
+//					dp *= 10;
+					dp = (dp << 3) + (dp << 1);			// x * 10 = x * 8 + x * 2
 					dp += *format - '0';
 				}
 			}
@@ -651,18 +657,18 @@ unsigned int embedded_printf(char *format, ...)
 //}
 
 
-/*
+/******************************************************************************
  * simple function to print a String
- */
+ ******************************************************************************/
 unsigned int print_string(char *string)
 {
 	return embedded_prints(string, 0, NON_PAD);
 }
 
 
-/*
+/******************************************************************************
  * simple function to print a signed long
- */
+ ******************************************************************************/
 unsigned int print_long(long number)
 {
 	char buffer[PRINT_BUF_LEN];
@@ -671,9 +677,9 @@ unsigned int print_long(long number)
 }
 
 
-/*
+/******************************************************************************
  * simple function to print a unsigned long
- */
+ ******************************************************************************/
 unsigned int print_ulong(unsigned long number)
 {
 	char buffer[PRINT_BUF_LEN];
@@ -682,9 +688,9 @@ unsigned int print_ulong(unsigned long number)
 }
 
 
-/*
+/******************************************************************************
  * simple function to print a hexadecimal
- */
+ ******************************************************************************/
 unsigned int print_hexa(long number)
 {
 	char buffer[PRINT_BUF_LEN];
@@ -693,9 +699,9 @@ unsigned int print_hexa(long number)
 }
 
 #ifdef	ENABLE_BINARY_
-/*
+/******************************************************************************
  * simple function to print a binary
- */
+ ******************************************************************************/
 unsigned int print_binary(long number, unsigned int bits)
 {
 	char buffer[PRINT_BUF_LEN];
@@ -706,9 +712,9 @@ unsigned int print_binary(long number, unsigned int bits)
 
 
 #ifdef	ENABLE_FLOAT_
-/*
+/******************************************************************************
  * simple function to print a float/double
- */
+ ******************************************************************************/
 #ifdef	PRECISION_FLOAT_
 unsigned int print_float(double number, int dp)
 {
@@ -726,9 +732,9 @@ unsigned int print_float(float number, int dp)
 #endif
 
 
-/*
- * simple function to print in scientific notatio - cast to (double)
- */
+/******************************************************************************
+ * simple function to print in scientific notation - cast to (double)
+ ******************************************************************************/
 #ifdef	PRECISION_FLOAT_
 unsigned int print_scientific(double number, int dp)
 {
