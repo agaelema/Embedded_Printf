@@ -1,7 +1,7 @@
 /******************************************************************************
  *  "serial_conf.c" used in the embedded version of "printf" function
  *
- *  author: Haroldo Amaral - agaelema@globo.com
+ *  author: Haroldo Amaral - agaelema@gmail.com
  *  v0.4 - 2017/08/19
  ******************************************************************************
  *  log:  . Modify initial version
