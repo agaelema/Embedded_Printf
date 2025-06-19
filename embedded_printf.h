@@ -2,7 +2,7 @@
  *  Embedded version of "printf( )" function
  *  - with similar functions but more efficient
  *
- *  author: Haroldo Amaral - agaelema@globo.com
+ *  author: Haroldo Amaral - agaelema@gmail.com
  *  v0.5 - 2017/08/20
  *
  *  Based in this link:
