@@ -1,3 +1,5 @@
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/agaelema/Embedded_Printf)
+
 # Embedded_Printf
 
 Embedded version of the famous "printf( )" function.
